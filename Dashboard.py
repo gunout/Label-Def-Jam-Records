@@ -1144,7 +1144,7 @@ class DefJamAnalyzer:
                 autonomie_moyenne = np.mean([self.production_data[a]['autonomie_artistique'] for a in artistes])
                 
                 # Couleur pour la décennie
-                couleurs = {'1980s': '#FF0000', '1990s': '#4169E1', '2000s+': '#FFD700'}
+                couleurs = {'1980s': '#FF0000', '1990s': '#4169E1', '2000s+': '#FFD700'}[decennie]
                 
                 fig.add_trace(go.Scatter(
                     x=[qualite_moyenne],
@@ -1526,7 +1526,8 @@ class DefJamAnalyzer:
                 </ul>
             </div>
             """, unsafe_allow_html=True)
-              def create_timeline_analysis(self):
+
+    def create_timeline_analysis(self):
         """Analyse chronologique"""
         st.markdown('<h3 class="section-title">📜 CHRONOLOGIE HISTORIQUE</h3>', unsafe_allow_html=True)
         
