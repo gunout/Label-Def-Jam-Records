@@ -1126,44 +1126,7 @@ class DefJamAnalyzer:
         
         st.plotly_chart(fig, use_container_width=True)
 
-        def create_quality_autonomy_chart(self):
-        """Graphique qualité vs autonomie"""
-        artists = list(self.production_data.keys())
-        qualite = [self.production_data[artist]['qualite_production'] for artist in artists]
-        autonomie = [self.production_data[artist]['autonomie_artistique'] for artist in artists]
-        
-        fig = go.Figure()
-        
-        fig.add_trace(go.Scatter(
-            x=qualite,
-            y=autonomie,
-            mode='markers+text',
-            marker=dict(
-                size=60,
-                color=[self.color_palette[artist] for artist in artists],
-                opacity=0.9
-            ),
-            text=artists,
-            textposition="top center",
-            textfont=dict(color='white', size=10, weight='bold')
-        ))
-        
-        fig.update_layout(
-            title='Qualité de Production vs Autonomie Artistique',
-            xaxis_title='Qualité de Production (1-10)',
-            yaxis_title='Autonomie Artistique (1-10)',
-            paper_bgcolor='#1a1a1a',
-            plot_bgcolor='#0a0a0a',
-            font=dict(color='#ffffff', size=14),
-            height=400,
-            showlegend=False,
-            xaxis=dict(range=[7, 10.5], tickfont=dict(size=12), gridcolor='#333333'),
-            yaxis=dict(range=[6, 10.5], tickfont=dict(size=12), gridcolor='#333333')
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
-
-    def create_production_evolution_analysis(self):  # <-- CETTE LIGNE DOIT AVOIR 4 ESPACES
+    def create_production_evolution_analysis(self):
         """Analyse de l'évolution des styles"""
         # Groupes par décennies
         decennies = {
@@ -1230,24 +1193,6 @@ class DefJamAnalyzer:
         )
         
         st.plotly_chart(fig, use_container_width=True)
-
-    def create_marketing_analysis(self):  # <-- Cette méthode doit aussi avoir 4 espaces
-        """Analyse des stratégies marketing"""
-        st.markdown('<h3 class="section-title">🎯 STRATÉGIES MARKETING ÉVOLUTIVES</h3>', unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown('<div class="subsection-title">📈 Budgets vs Innovation</div>', unsafe_allow_html=True)
-            self.create_marketing_innovation_chart()
-        
-        with col2:
-            st.markdown('<div class="subsection-title">🎪 Canaux par Époque</div>', unsafe_allow_html=True)
-            self.create_marketing_channels_evolution()
-        
-        # Analyse des innovations
-        st.markdown('<div class="subsection-title">✨ Révolution Marketing</div>', unsafe_allow_html=True)
-        self.create_marketing_revolution_analysis()
 
     def create_marketing_analysis(self):
         """Analyse des stratégies marketing"""
