@@ -1126,33 +1126,39 @@ class DefJamAnalyzer:
         
         st.plotly_chart(fig, use_container_width=True)
 
-    def create_production_evolution_analysis(self):
-        """Analyse de l'évolution des styles"""
-        # Groupes par décennies
-        decennies = {
-            '1980s': ['RICK RUBIN', 'RUSSELL SIMMONS', 'LL COOL J', 'BEASTIE BOYS', 'PUBLIC ENEMY'],
-            '1990s': ['RZA', 'METHOD MAN'],
-            '2000s+': ['JAY-Z', 'KANYE WEST']
-        }
-        
-        fig = go.Figure()
-        
-        for decennie, artistes in decennies.items():
-            if artistes:
-                # Calculer la moyenne de qualité pour la décennie
-                qualite_moyenne = np.mean([self.production_data[a]['qualite_production'] for a in artistes])
-                autonomie_moyenne = np.mean([self.production_data[a]['autonomie_artistique'] for a in artistes])
-                
-                # Couleur pour la décennie
-                couleurs = {'1980s': '#FF0000', '1990s': '#4169E1', '2000s+': '#FFD700'}[decennie]
-                
+   def create_production_evolution_analysis(self):
+    """Analyse de l'évolution des styles"""
+    # Groupes par décennies
+    decennies = {
+        '1980s': ['RICK RUBIN', 'RUSSELL SIMMONS', 'LL COOL J', 'BEASTIE BOYS', 'PUBLIC ENEMY'],
+        '1990s': ['RZA', 'METHOD MAN'],
+        '2000s+': ['JAY-Z', 'KANYE WEST']
+    }
+    
+    # Définir les couleurs pour chaque décennie
+    couleurs = {
+        '1980s': '#FF0000',  # Rouge
+        '1990s': '#4169E1',  # Bleu
+        '2000s+': '#FFD700'  # Or
+    }
+    
+    fig = go.Figure()
+    
+    for decennie, artistes in decennies.items():
+        if artistes:
+            # Calculer la moyenne de qualité pour la décennie
+            qualite_moyenne = np.mean([self.production_data[a]['qualite_production'] for a in artistes if a in self.production_data])
+            autonomie_moyenne = np.mean([self.production_data[a]['autonomie_artistique'] for a in artistes if a in self.production_data])
+            
+            # Vérifier que les valeurs sont valides
+            if not np.isnan(qualite_moyenne) and not np.isnan(autonomie_moyenne):
                 fig.add_trace(go.Scatter(
                     x=[qualite_moyenne],
                     y=[autonomie_moyenne],
                     mode='markers',
                     marker=dict(
                         size=120,
-                        color=couleurs[decennie],
+                        color=couleurs.get(decennie, '#FFFFFF'),  # Utiliser .get() pour éviter KeyError
                         opacity=0.8,
                         line=dict(width=3, color='#ffffff')
                     ),
@@ -1162,31 +1168,31 @@ class DefJamAnalyzer:
                     name=decennie,
                     showlegend=True
                 ))
-        
-        fig.update_layout(
-            title='Évolution des Styles par Décennie',
-            xaxis_title='Qualité Moyenne (1-10)',
-            yaxis_title='Autonomie Moyenne (1-10)',
-            paper_bgcolor='#1a1a1a',
-            plot_bgcolor='#0a0a0a',
-            font=dict(color='#ffffff', size=14),
-            height=400,
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1,
-                bgcolor='rgba(26, 26, 26, 0.9)',
-                bordercolor='#FF0000',
-                borderwidth=1,
-                font=dict(color='white', size=12)
-            ),
-            xaxis=dict(range=[7, 9.5], tickfont=dict(size=12), gridcolor='#333333'),
-            yaxis=dict(range=[7, 9.5], tickfont=dict(size=12), gridcolor='#333333')
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
+    
+    fig.update_layout(
+        title='Évolution des Styles par Décennie',
+        xaxis_title='Qualité Moyenne (1-10)',
+        yaxis_title='Autonomie Moyenne (1-10)',
+        paper_bgcolor='#1a1a1a',
+        plot_bgcolor='#0a0a0a',
+        font=dict(color='#ffffff', size=14),
+        height=400,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            bgcolor='rgba(26, 26, 26, 0.9)',
+            bordercolor='#FF0000',
+            borderwidth=1,
+            font=dict(color='white', size=12)
+        ),
+        xaxis=dict(range=[7, 9.5], tickfont=dict(size=12), gridcolor='#333333'),
+        yaxis=dict(range=[7, 9.5], tickfont=dict(size=12), gridcolor='#333333')
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
 
     def create_marketing_analysis(self):
         """Analyse des stratégies marketing"""
